@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { CompassLogo } from "@/components/CompassLogo";
 
 export function SiteFooter() {
   return (
@@ -6,13 +7,13 @@ export function SiteFooter() {
       <div className="max-w-7xl mx-auto px-6 py-10 grid md:grid-cols-3 gap-8">
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <div className="size-8 bg-academic rounded-sm flex items-center justify-center">
-              <span className="font-display text-primary-foreground text-lg font-bold leading-none -mt-1">م</span>
+            <div className="size-9 bg-gradient-compass rounded-full flex items-center justify-center shadow-compass">
+              <CompassLogo className="size-6" animated={false} />
             </div>
-            <span className="font-display text-xl font-bold text-academic">موجِّه</span>
+            <span className="font-display text-xl font-bold text-gradient-compass">بوصلة</span>
           </div>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            مرشدك الذكي لاختيار التخصص الجامعي المناسب في الأردن.
+            بوصلتك نحو التخصص الجامعي المناسب لطلاب التوجيهي في فلسطين.
           </p>
         </div>
         <div>
@@ -34,7 +35,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-border py-4 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} موجِّه. جميع الحقوق محفوظة.
+        © {new Date().getFullYear()} بوصلة · صُنع بـ ♥ لطلاب فلسطين. جميع الحقوق محفوظة.
       </div>
     </footer>
   );
