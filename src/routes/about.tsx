@@ -5,8 +5,8 @@ import { SiteFooter } from "@/components/SiteFooter";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "من نحن — موجِّه" },
-      { name: "description", content: "تعرّف على فريق موجِّه ورسالتنا في مساعدة طلاب التوجيهي على اختيار التخصص الجامعي المناسب." },
+      { title: "من نحن — بوصلة" },
+      { name: "description", content: "تعرّف على فريق بوصلة ورسالتنا في مساعدة طلاب التوجيهي في فلسطين على اختيار التخصص الجامعي المناسب." },
     ],
   }),
   component: AboutPage,
@@ -17,9 +17,9 @@ function AboutPage() {
     <div className="min-h-screen flex flex-col bg-background">
       <SiteHeader />
       <main className="flex-1 max-w-4xl mx-auto px-6 py-16">
-        <h1 className="font-display text-5xl font-bold text-academic mb-6">من نحن</h1>
+        <h1 className="font-display text-5xl font-bold mb-6">من نحن · <span className="text-gradient-compass">بوصلة</span></h1>
         <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-          موجِّه مشروع تعليمي يهدف لمساعدة طلاب التوجيهي في الأردن على اتخاذ أهم قرار في حياتهم الأكاديمية: اختيار التخصص الجامعي المناسب.
+          بوصلة مشروع تعليمي فلسطيني يهدف لمساعدة طلاب التوجيهي في فلسطين على اتخاذ أهم قرار في حياتهم الأكاديمية: اختيار التخصص الجامعي المناسب.
         </p>
         <div className="space-y-8">
           <section>
@@ -31,7 +31,7 @@ function AboutPage() {
           <section>
             <h2 className="font-display text-2xl font-bold text-academic mb-3">كيف نعمل؟</h2>
             <p className="text-muted-foreground leading-relaxed">
-              بنينا شات بوت ذكي مدعوماً بـ workflow متطور على n8n، يجمع بيانات حقيقية من الجامعات الأردنية ويحلّلها فوراً ليقترح عليك الخيارات الأنسب لظروفك.
+              بنينا بوصلة كشات بوت ذكي مدعوم بـ workflow متطور على n8n، يجمع بيانات حقيقية من الجامعات الفلسطينية ويحلّلها فوراً ليقترح عليك الخيارات الأنسب لظروفك.
             </p>
           </section>
           <section>
