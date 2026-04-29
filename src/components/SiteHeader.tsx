@@ -2,6 +2,8 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { LogOut, MessageSquare, Upload, GraduationCap } from "lucide-react";
+import { CompassLogo } from "@/components/CompassLogo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function SiteHeader() {
   const { user, profile, signOut } = useAuth();
@@ -15,13 +17,16 @@ export function SiteHeader() {
   const isUniversity = profile?.account_type === "university";
 
   return (
-    <header className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-40">
+    <header className="border-b border-border bg-background/75 backdrop-blur-xl sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="size-9 bg-academic rounded-sm flex items-center justify-center shadow-sm">
-            <span className="font-display text-primary-foreground text-xl font-bold leading-none -mt-1">م</span>
+        <Link to="/" className="flex items-center gap-2.5 group">
+          <div className="size-10 bg-gradient-compass rounded-full flex items-center justify-center shadow-compass group-hover:scale-105 transition-transform">
+            <CompassLogo className="size-7" />
           </div>
-          <span className="font-display text-2xl font-bold text-academic">موجِّه</span>
+          <div className="flex flex-col leading-none">
+            <span className="font-display text-2xl font-bold text-gradient-compass">بوصلة</span>
+            <span className="text-[10px] text-muted-foreground tracking-widest mt-0.5">BOSLAH · فلسطين</span>
+          </div>
         </Link>
 
         <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-muted-foreground">
@@ -39,7 +44,8 @@ export function SiteHeader() {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
+          <ThemeToggle />
           {user ? (
             <>
               {isUniversity && (
