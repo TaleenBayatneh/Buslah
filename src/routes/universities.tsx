@@ -6,7 +6,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { MapPin, ExternalLink } from "lucide-react";
 
 export const Route = createFileRoute("/universities")({
-  head: () => ({ meta: [{ title: "دليل الجامعات — موجِّه" }, { name: "description", content: "تصفّح الجامعات الأردنية المتاحة في قاعدة بيانات موجِّه." }] }),
+  head: () => ({ meta: [{ title: "دليل الجامعات — بوصلة" }, { name: "description", content: "تصفّح الجامعات الفلسطينية المتاحة في قاعدة بيانات بوصلة." }] }),
   component: UniPage,
 });
 
@@ -21,8 +21,8 @@ function UniPage() {
     <div className="min-h-screen flex flex-col bg-background">
       <SiteHeader />
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12">
-        <h1 className="font-display text-4xl font-bold text-academic mb-2">دليل الجامعات</h1>
-        <p className="text-muted-foreground mb-8">الجامعات الأردنية المتاحة حالياً في قاعدة بيانات موجِّه.</p>
+        <h1 className="font-display text-4xl font-bold mb-2">دليل <span className="text-gradient-compass">الجامعات الفلسطينية</span></h1>
+        <p className="text-muted-foreground mb-8">الجامعات الفلسطينية المتاحة حالياً في قاعدة بيانات بوصلة.</p>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {list.map((u) => (
             <div key={u.id} className="bg-card border border-border rounded-sm p-5 shadow-sm">
