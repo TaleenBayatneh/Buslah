@@ -4,15 +4,15 @@ import { CompassLogo } from "@/components/CompassLogo";
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-paper-dim mt-20">
-      <div className="max-w-7xl mx-auto px-6 py-10 grid md:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-6 py-10 grid md:grid-cols-3 gap-8 font-serif">
         <div>
           <div className="flex items-center gap-2 mb-3">
             <div className="size-9 bg-gradient-compass rounded-full flex items-center justify-center shadow-compass">
               <CompassLogo className="size-6" animated={false} />
             </div>
-            <span className="font-display text-xl font-bold text-gradient-compass">بوصلة</span>
+            <span className="font-display text-xl font-bold text-gradient-compass font-serif">بوصلة</span>
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed">
+          <p className="text-sm text-muted-foreground leading-relaxed font-serif text-right">
             بوصلتك نحو التخصص الجامعي المناسب لطلاب التوجيهي في فلسطين.
           </p>
         </div>
