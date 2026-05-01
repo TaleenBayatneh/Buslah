@@ -16,27 +16,27 @@ function AboutPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SiteHeader />
-      <main className="flex-1 max-w-4xl mx-auto px-6 py-16">
-        <h1 className="font-display text-5xl font-bold mb-6">من نحن · <span className="text-gradient-compass">بوصلة</span></h1>
-        <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-          بوصلة مشروع تعليمي فلسطيني يهدف لمساعدة طلاب التوجيهي في فلسطين على اتخاذ أهم قرار في حياتهم الأكاديمية: اختيار التخصص الجامعي المناسب.
+      <main className="flex-1 max-w-4xl mx-auto px-6 py-16 font-serif">
+        <h1 className="font-display text-5xl font-bold mb-6 font-serif text-center">من نحن · <span className="text-gradient-compass">بوصلة</span></h1>
+        <p className="text-muted-foreground leading-relaxed mb-8 text-center text-base">
+          نحن فريق من طلبة هندسة الحاسوب في جامعة بيرزيت، قمنا بتطوير مشروع تخرج يتمثل في محادثة ذكية ومتقدمة موجهة لطلبة التوجيهي، بهدف تسهيل الوصول إلى تقنيات الذكاء الاصطناعي وجعلها أداة مفيدة ومتاحة للجميع.
         </p>
         <div className="space-y-8">
           <section>
-            <h2 className="font-display text-2xl font-bold text-academic mb-3">رسالتنا</h2>
-            <p className="text-muted-foreground leading-relaxed">
+            <h2 className="font-display text-2xl font-bold text-academic mb-3 font-serif">رسالتنا</h2>
+            <p className="text-muted-foreground leading-relaxed font-serif">
               نؤمن بأن كل طالب يستحق إرشاداً مبنياً على بياناته الفعلية: معدله، إمكاناته المالية، وموقعه الجغرافي — بدلاً من النصائح العامة.
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl font-bold text-academic mb-3">كيف نعمل؟</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              بنينا بوصلة كشات بوت ذكي مدعوم بـ workflow متطور على n8n، يجمع بيانات حقيقية من الجامعات الفلسطينية ويحلّلها فوراً ليقترح عليك الخيارات الأنسب لظروفك.
+            <h2 className="font-display text-2xl font-bold text-academic mb-3 font-serif">كيف نعمل؟</h2>
+            <p className="text-muted-foreground leading-relaxed font-serif">
+              بنينا بوصلة كشات بوت ذكي مدعوم بـ workflow متطور على n8n، يجمع بيانات حقيقية من مختلف الجامعات ويحلّلها فوراً ليقترح عليك الخيارات الأنسب لظروفك.
             </p>
           </section>
           <section>
-            <h2 className="font-display text-2xl font-bold text-academic mb-3">للجامعات</h2>
-            <p className="text-muted-foreground leading-relaxed">
+            <h2 className="font-display text-2xl font-bold text-academic mb-3 font-serif">للجامعات</h2>
+            <p className="text-muted-foreground leading-relaxed font-serif">
               وفّرنا لوحة تحكم تتيح للجامعات رفع بياناتها (تخصصات، رسوم، معدلات قبول) لتصل لكل طالب يبحث عن مكانه الأمثل.
             </p>
           </section>
