@@ -31,7 +31,8 @@ function Index() {
               </span>
               <h1 className="font-display text-5xl lg:text-7xl font-bold leading-[1.15] text-balance mb-6 font-serif">
                 <span className="text-foreground">حدّد</span>{" "}
-                <span className="text-gradient-compass">اتجاهك</span>{"\n"}
+                <span className="text-gradient-compass">اتجاهك</span>
+                <br />
                 نحو التخصص الصح
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed text-pretty mb-8 max-w-xl mx-auto lg:mx-0 font-serif">
