@@ -1,41 +1,176 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
+import { toast } from "sonner";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { MapPin, ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Upload, FileSpreadsheet, CheckCircle2, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/universities")({
-  head: () => ({ meta: [{ title: "دليل الجامعات — بوصلة" }, { name: "description", content: "تصفّح الجامعات الفلسطينية المتاحة في قاعدة بيانات بوصلة." }] }),
+  head: () => ({ meta: [{ title: "رفع بيانات الجامعة — بوصلة" }, { name: "description", content: "تعليمات وتنسيق ملف بيانات التخصصات لرفعها إلى قاعدة بيانات بوصلة." }] }),
   component: UniPage,
 });
 
-interface Uni { id: string; name: string; city: string | null; type: string | null; website: string | null; description: string | null; }
+const N8N_WEBHOOK = import.meta.env.VITE_N8N_UNIVERSITY_WEBHOOK_URL as string | undefined;
+
+const COLUMNS: { key: string; label: string; example: string; note: string }[] = [
+  { key: "university_name", label: "اسم الجامعة", example: "جامعة بيرزيت", note: "الاسم الرسمي الكامل للجامعة" },
+  { key: "major_name", label: "اسم التخصص", example: "هندسة حاسوب", note: "اسم التخصص كما هو في دليل الجامعة" },
+  { key: "duration_years", label: "مدة الدراسة (سنوات)", example: "5", note: "رقم فقط — مثال: 4 أو 5 أو 6" },
+  { key: "credit_hour_fee", label: "رسوم الساعة", example: "180", note: "رقم فقط بالعملة (شيكل / دينار)" },
+  { key: "min_acceptance_rate", label: "معدل القبول", example: "85.5", note: "النسبة المئوية كرقم — مثال: 85.5" },
+];
 
 function UniPage() {
-  const [list, setList] = useState<Uni[]>([]);
-  useEffect(() => {
-    supabase.from("universities").select("*").order("name").then(({ data }) => setList((data as Uni[]) ?? []));
-  }, []);
+  const [file, setFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!file) { toast.error("اختر ملفاً أولاً"); return; }
+    if (file.size > 10 * 1024 * 1024) { toast.error("الحد الأقصى ١٠ ميغابايت"); return; }
+    if (!N8N_WEBHOOK) { toast.error("رابط الويبهوك غير مهيأ بعد. يرجى التواصل مع فريق بوصلة."); return; }
+
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      fd.append("file_name", file.name);
+      const res = await fetch(N8N_WEBHOOK, { method: "POST", body: fd });
+      if (!res.ok) throw new Error("فشل إرسال الملف");
+      toast.success("تم إرسال الملف بنجاح! سنراجع البيانات قريباً.");
+      setDone(true);
+      setFile(null);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "خطأ غير متوقع";
+      toast.error(msg);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SiteHeader />
-      <main className="flex-1 max-w-6xl mx-auto px-6 py-12">
-        <h1 className="font-display text-4xl font-bold mb-2 font-serif">دليل <span className="text-gradient-compass font-serif">الجامعات </span></h1>
-        <p className="text-muted-foreground mb-8 font-serif">{"\n"}</p>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {list.map((u) => (
-            <div key={u.id} className="bg-card border border-border rounded-sm p-5 shadow-sm">
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="font-display text-lg font-bold text-academic">{u.name}</h3>
-                <span className="text-xs bg-paper-dim border border-border px-2 py-0.5 rounded-sm">{u.type === "public" ? "حكومية" : "خاصة"}</span>
-              </div>
-              {u.city && <p className="text-sm text-muted-foreground flex items-center gap-1 mb-2"><MapPin className="size-3" /> {u.city}</p>}
-              {u.description && <p className="text-sm text-foreground/80 mb-3 leading-relaxed">{u.description}</p>}
-              {u.website && <a href={u.website} target="_blank" rel="noreferrer" className="text-sm text-academic font-semibold inline-flex items-center gap-1 hover:underline"><ExternalLink className="size-3" /> الموقع الرسمي</a>}
-            </div>
-          ))}
+      <main className="flex-1 max-w-4xl mx-auto px-6 py-12 w-full">
+        <div className="text-center mb-10">
+          <h1 className="font-display text-4xl font-bold mb-3 font-serif">
+            رفع بيانات <span className="text-gradient-compass font-serif">الجامعة</span>
+          </h1>
+          <p className="text-muted-foreground font-serif leading-relaxed max-w-2xl mx-auto">
+            هذه الصفحة موجّهة للجامعات الراغبة بإضافة تخصصاتها إلى قاعدة بيانات بوصلة. يرجى تجهيز ملف Excel أو CSV وفق التنسيق المبيّن أدناه ثم رفعه في النموذج بالأسفل.
+          </p>
         </div>
+
+        {/* Required columns */}
+        <section className="bg-card border border-border rounded-sm p-6 mb-6 shadow-sm">
+          <h2 className="font-display text-2xl font-bold text-academic mb-4 font-serif flex items-center gap-2">
+            <FileSpreadsheet className="size-6" /> الأعمدة المطلوبة في الملف
+          </h2>
+          <p className="text-sm text-muted-foreground mb-4 font-serif">
+            يجب أن يحتوي الملف على الأعمدة التالية بنفس الترتيب، مع صفّ عناوين في الأعلى:
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm border-collapse">
+              <thead>
+                <tr className="bg-paper-dim border-b border-border">
+                  <th className="text-right p-3 font-bold">اسم العمود</th>
+                  <th className="text-right p-3 font-bold">المعرّف التقني</th>
+                  <th className="text-right p-3 font-bold">مثال</th>
+                  <th className="text-right p-3 font-bold">ملاحظات</th>
+                </tr>
+              </thead>
+              <tbody>
+                {COLUMNS.map((c) => (
+                  <tr key={c.key} className="border-b border-border last:border-0">
+                    <td className="p-3 font-semibold">{c.label}</td>
+                    <td className="p-3 font-mono text-xs text-muted-foreground" dir="ltr">{c.key}</td>
+                    <td className="p-3" dir="ltr">{c.example}</td>
+                    <td className="p-3 text-muted-foreground text-xs">{c.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* Sample */}
+        <section className="bg-card border border-border rounded-sm p-6 mb-6 shadow-sm">
+          <h2 className="font-display text-xl font-bold text-academic mb-3 font-serif">مثال على شكل الملف</h2>
+          <div className="overflow-x-auto rounded-sm border border-border">
+            <table className="w-full text-xs" dir="ltr">
+              <thead className="bg-paper-dim">
+                <tr>
+                  {COLUMNS.map((c) => (
+                    <th key={c.key} className="p-2 text-left font-mono border-b border-border">{c.key}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="font-mono">
+                <tr className="border-b border-border">
+                  <td className="p-2">جامعة بيرزيت</td><td className="p-2">هندسة حاسوب</td><td className="p-2">5</td><td className="p-2">180</td><td className="p-2">85.5</td>
+                </tr>
+                <tr className="border-b border-border">
+                  <td className="p-2">جامعة بيرزيت</td><td className="p-2">إدارة أعمال</td><td className="p-2">4</td><td className="p-2">140</td><td className="p-2">70.0</td>
+                </tr>
+                <tr>
+                  <td className="p-2">جامعة النجاح</td><td className="p-2">طب بشري</td><td className="p-2">6</td><td className="p-2">350</td><td className="p-2">95.0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <ul className="mt-4 text-sm text-muted-foreground space-y-1.5 font-serif">
+            <li>• الصيغ المقبولة: <span className="font-mono" dir="ltr">.xlsx, .xls, .csv</span></li>
+            <li>• الحد الأقصى لحجم الملف: <strong>١٠ ميغابايت</strong></li>
+            <li>• الأرقام بدون فواصل أو رموز عملة (نضعها نحن لاحقاً).</li>
+            <li>• كل صفّ يمثّل تخصصاً واحداً — كرّر اسم الجامعة في كل صفّ.</li>
+          </ul>
+        </section>
+
+        {/* Upload form */}
+        <section className="bg-card border border-border rounded-sm p-6 shadow-sm">
+          <h2 className="font-display text-2xl font-bold text-academic mb-4 font-serif flex items-center gap-2">
+            <Upload className="size-6" /> رفع الملف
+          </h2>
+          {done ? (
+            <div className="text-center py-8">
+              <CheckCircle2 className="size-12 text-emerald-600 mx-auto mb-3" />
+              <p className="font-semibold text-lg mb-1 font-serif">تم استلام ملفك بنجاح</p>
+              <p className="text-muted-foreground text-sm mb-4 font-serif">سنراجع البيانات وندمجها في قاعدة بيانات بوصلة قريباً.</p>
+              <Button variant="outline" onClick={() => setDone(false)}>رفع ملف آخر</Button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold mb-2 font-serif">اختر الملف</label>
+                <Input
+                  type="file"
+                  accept=".csv,.xlsx,.xls"
+                  onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                  required
+                  className="bg-background"
+                />
+                {file && (
+                  <p className="text-xs text-muted-foreground mt-2" dir="ltr">
+                    {file.name} — {(file.size / 1024).toFixed(1)} KB
+                  </p>
+                )}
+              </div>
+              <Button type="submit" disabled={uploading || !file} className="w-full sm:w-auto">
+                {uploading ? (
+                  <><Loader2 className="size-4 ml-1 animate-spin" /> جاري الإرسال...</>
+                ) : (
+                  <><Upload className="size-4 ml-1" /> إرسال الملف</>
+                )}
+              </Button>
+              <p className="text-xs text-muted-foreground font-serif">
+                بإرسالك للملف فإنك توافق على دمج هذه البيانات في قاعدة بيانات بوصلة لخدمة طلاب التوجيهي.
+              </p>
+            </form>
+          )}
+        </section>
       </main>
       <SiteFooter />
     </div>

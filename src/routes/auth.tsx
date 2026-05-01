@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({ meta: [{ title: "تسجيل الدخول — موجِّه" }] }),
@@ -21,8 +20,6 @@ const signUpSchema = z.object({
   full_name: z.string().trim().min(2, "الاسم قصير جداً").max(100),
   email: z.string().trim().email("بريد إلكتروني غير صالح").max(255),
   password: z.string().min(6, "كلمة السر ٦ أحرف على الأقل").max(72),
-  account_type: z.enum(["student", "university"]),
-  university_name: z.string().trim().max(200).optional(),
 });
 
 function AuthPage() {
@@ -57,8 +54,6 @@ function AuthPage() {
       full_name: fd.get("full_name"),
       email: fd.get("email"),
       password: fd.get("password"),
-      account_type: fd.get("account_type"),
-      university_name: fd.get("university_name") || undefined,
     });
     if (!parsed.success) {
       toast.error(parsed.error.issues[0].message);
@@ -72,8 +67,7 @@ function AuthPage() {
         emailRedirectTo: `${window.location.origin}/chat`,
         data: {
           full_name: parsed.data.full_name,
-          account_type: parsed.data.account_type,
-          university_name: parsed.data.university_name,
+          account_type: "student",
         },
       },
     });
@@ -83,8 +77,6 @@ function AuthPage() {
       toast.success("تم إنشاء حسابك! يمكنك الدخول الآن.");
     }
   };
-
-  const [accType, setAccType] = useState<"student" | "university">("student");
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -109,21 +101,7 @@ function AuthPage() {
             </TabsContent>
             <TabsContent value="signup">
               <form onSubmit={handleSignUp} className="space-y-4 mt-4">
-                <div>
-                  <Label className="mb-2 block">نوع الحساب</Label>
-                  <RadioGroup value={accType} onValueChange={(v) => setAccType(v as "student" | "university")} name="account_type" className="grid grid-cols-2 gap-2">
-                    <Label className="flex items-center gap-2 border border-border rounded-sm p-3 cursor-pointer has-[:checked]:bg-academic/5 has-[:checked]:border-academic">
-                      <RadioGroupItem value="student" /> طالب
-                    </Label>
-                    <Label className="flex items-center gap-2 border border-border rounded-sm p-3 cursor-pointer has-[:checked]:bg-academic/5 has-[:checked]:border-academic">
-                      <RadioGroupItem value="university" /> جامعة
-                    </Label>
-                  </RadioGroup>
-                </div>
                 <div><Label>الاسم الكامل</Label><Input name="full_name" required /></div>
-                {accType === "university" && (
-                  <div><Label>اسم الجامعة</Label><Input name="university_name" required /></div>
-                )}
                 <div><Label>البريد الإلكتروني</Label><Input name="email" type="email" required /></div>
                 <div><Label>كلمة السر</Label><Input name="password" type="password" required minLength={6} /></div>
                 <Button type="submit" className="w-full" disabled={loading}>{loading ? "..." : "إنشاء حساب"}</Button>
