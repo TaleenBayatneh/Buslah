@@ -27,7 +27,7 @@ function Index() {
             <div className="text-center lg:text-right font-serif">
               <span className="inline-flex items-center gap-2 border border-oak/40 bg-card/60 backdrop-blur px-4 py-1.5 text-xs font-semibold text-oak-dark tracking-wider rounded-full mb-6 font-serif">
                 <span className="size-1.5 bg-oak rounded-full animate-pulse" />
-                لطلاب التوجيهي في فلسطين • ٢٠٢٥/٢٠٢٦
+                لطلاب التوجيهي في فلسطين •
               </span>
               <h1 className="font-display text-5xl lg:text-7xl font-bold leading-[1.15] text-balance mb-6 font-serif">
                 <span className="text-foreground">حدّد</span>{" "}
@@ -39,7 +39,7 @@ function Index() {
                 <strong className="text-foreground">بوصلة</strong> — أول مرشد ذكي يفهم واقع الطالب الفلسطيني. يحلّل معدلك، ميزانية عائلتك، وموقعك الجغرافي ليرسم لك أوضح طريق نحو جامعتك الأنسب.
               </p>
               <div className="flex flex-wrap gap-3 justify-center lg:justify-start font-serif">
-                <Button asChild size="lg" variant="outline" className="text-base text-left border-input shadow-sm hover:bg-accent hover:text-accent-foreground">
+                <Button asChild size="lg" variant="outline" className="inline-flex items-center justify-center gap-2 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-8 rounded-md px-3 text-sm font-bold">
                   <Link to="/chat"><Compass className="size-4 ml-2" /> ابدأ رحلتك مع بوصلة <ArrowLeft className="size-4 mr-1" /></Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="text-base">
@@ -89,21 +89,21 @@ function Index() {
         </section>
 
         {/* ============== Four Directions — signature compass section ============== */}
-        <section className="bg-paper-dim border-y border-border py-20">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center max-w-2xl mx-auto mb-14">
-              <span className="inline-block text-xs font-bold tracking-[0.3em] text-oak-dark mb-3">الجهات الأربع</span>
-              <h2 className="font-display text-4xl lg:text-5xl font-bold mb-4">
+        <section className="bg-paper-dim border-y border-border py-20 border-inherit">
+          <div className="max-w-7xl mx-auto px-6 border-gray-950">
+            <div className="text-center max-w-2xl mx-auto mb-14 font-serif">
+              <span className="inline-block font-bold tracking-[0.3em] text-oak-dark mb-3 text-sm font-serif">الجهات الأربع</span>
+              <h2 className="font-display text-4xl lg:text-5xl font-bold mb-4 font-serif">
                 <span className="text-gradient-compass">بوصلة</span> ترشدك من أربع جهات
               </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                كل جهة تمثّل عاملاً يؤثّر على قرارك. نجمعهم كلهم لنرسم لك الإحداثيات الدقيقة لمستقبلك.
+              <p className="text-muted-foreground leading-relaxed font-serif">
+                نأخذ كل العوامل المؤثرة في قرارك ونجمعها لنمنحك رؤية واضحة لمستقبلك.
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
               {[
                 { dir: "شمال", icon: TrendingUp, title: "ميولك وقدراتك", text: "نحلل فرعك ومعدلك بالتوجيهي ونربطهم بالتخصصات الواقعية المتاحة لك.", color: "from-academic" },
-                { dir: "شرق", icon: Wallet, title: "واقعك المالي", text: "ميزانية عائلتك، رسوم الجامعات، فرص المنح والتنافس — كلها بمعادلة واحدة.", color: "from-oak" },
+                { dir: "شرق", icon: Wallet, title: "موقعك الجغرافي", text: "ميزانية عائلتك، رسوم الجامعات، فرص المنح والتنافس .", color: "from-oak" },
                 { dir: "جنوب", icon: MapPin, title: "موقعك الجغرافي", text: "من غزة للضفة — نحسب المواصلات والسكن ونرشّح الأقرب لمنطقتك.", color: "from-academic" },
                 { dir: "غرب", icon: Heart, title: "شغفك ومستقبلك", text: "نطابق طموحك مع التخصصات المطلوبة فعلياً في سوق العمل الفلسطيني والعربي.", color: "from-oak" },
               ].map((f, i) => (
@@ -112,8 +112,8 @@ function Index() {
                   <div className="size-12 bg-gradient-compass rounded-xl flex items-center justify-center mb-4 shadow-compass">
                     <f.icon className="size-6 text-primary-foreground" />
                   </div>
-                  <h3 className="text-lg font-bold text-foreground mb-2 font-display">{f.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{f.text}</p>
+                  <h3 className="text-lg font-bold text-foreground mb-2 font-display font-serif">{f.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed font-serif">{f.text}</p>
                 </div>
               ))}
             </div>
@@ -122,9 +122,9 @@ function Index() {
 
         {/* ============== How it works — journey timeline ============== */}
         <section className="max-w-6xl mx-auto px-6 py-20">
-          <div className="text-center mb-14">
-            <h2 className="font-display text-4xl font-bold mb-4">رحلتك مع <span className="text-gradient-compass">بوصلة</span> بثلاث محطات</h2>
-            <p className="text-muted-foreground">من السؤال الأول حتى الإحداثيات النهائية لجامعتك.</p>
+          <div className="text-center mb-14 font-serif">
+            <h2 className="font-display font-bold mb-4 font-serif text-3xl">رحلتك مع <span className="text-gradient-compass">بوصلة</span> بثلاث محطات</h2>
+            <p className="text-muted-foreground font-serif">من السؤال الأول حتى الإحداثيات النهائية لجامعتك.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-6 relative">
             {/* connecting line */}
@@ -132,15 +132,15 @@ function Index() {
 
             {[
               { step: "١", title: "احكِ لبوصلة عن نفسك", text: "فرعك، معدلك، أين تسكن، وميزانيتك. خذ راحتك وتحدث بالعامية." },
-              { step: "٢", title: "بوصلة تحلل وتقارن", text: "نطابق بياناتك مع قاعدة معطيات الجامعات الفلسطينية لحظياً." },
+              { step: "٢", title: "بوصلة تحلل وتقارن", text: "نطابق بياناتك مع قاعدة معطيات الجامعات لحظياً." },
               { step: "٣", title: "احصل على إحداثياتك", text: "قائمة مرتبة بالتخصصات الأنسب لك مع تفاصيل كل جامعة." },
             ].map((s, i) => (
-              <div key={i} className="relative bg-card border border-border rounded-2xl p-7 text-center shadow-sm">
+              <div key={i} className="relative bg-card border border-border rounded-2xl p-7 text-center shadow-sm font-serif">
                 <div className="size-24 mx-auto mb-4 rounded-full bg-gradient-compass shadow-compass flex items-center justify-center font-display text-4xl font-bold text-primary-foreground relative z-10">
                   {s.step}
                 </div>
-                <h3 className="font-display text-xl font-bold mb-2 text-academic">{s.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{s.text}</p>
+                <h3 className="font-display text-xl font-bold mb-2 text-academic font-serif">{s.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed font-serif">{s.text}</p>
               </div>
             ))}
           </div>
@@ -154,9 +154,9 @@ function Index() {
                 <span className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-oak-dark mb-3">
                   <Navigation className="size-3" /> محادثة حقيقية
                 </span>
-                <h2 className="font-display text-4xl font-bold mb-4">شوف كيف <span className="text-gradient-compass">بوصلة</span> بتحكي معك</h2>
-                <p className="text-muted-foreground leading-relaxed mb-6">
-                  محادثة طبيعية بالعربية الفلسطينية. اسأل أي سؤال يخطر ببالك عن التخصصات، الجامعات، الرسوم، أو فرص العمل — وبوصلة بتجاوبك بثقة وشفافية.
+                <h2 className="font-display text-4xl font-bold mb-4 font-serif">كيف بوصلة بتحكي معك</h2>
+                <p className="text-muted-foreground leading-relaxed mb-6 font-serif">
+                  محادثة طبيعية بالعربية. اسأل أي سؤال يخطر ببالك عن التخصصات، الجامعات، الرسوم، أو فرص العمل {"\n"} وبوصلة بتجاوبك بثقة وشفافية.
                 </p>
                 <Button asChild size="lg" className="shadow-compass">
                   <Link to="/chat"><MessageSquare className="size-4 ml-2" /> جرّب المحادثة الآن</Link>
@@ -210,13 +210,13 @@ function Index() {
             <div className="absolute -top-20 -left-20 size-72 rounded-full bg-oak/20 blur-3xl pointer-events-none" />
             <div className="absolute -bottom-20 -right-20 size-72 rounded-full bg-oak/20 blur-3xl pointer-events-none" />
             <div>
-              <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-wider text-oak mb-4">
+              <span className="inline-flex items-center gap-2 text-xs font-semibold tracking-wider text-oak mb-4 text-inherit">
                 <Database className="size-4" /> للجامعات
               </span>
-              <h2 className="font-display text-3xl lg:text-4xl font-bold mb-4 leading-tight">
-                هل تمثّل جامعة؟ ارفع بياناتك بسهولة.
+              <h2 className="font-display text-3xl lg:text-4xl font-bold mb-4 leading-tight font-serif">
+                هل تمثّل جامعة؟ ارفع بياناتك بسهولة
               </h2>
-              <p className="text-primary-foreground/80 leading-relaxed mb-6">
+              <p className="text-primary-foreground/80 leading-relaxed mb-6 font-serif text-xl">
                 وفّرنا لك لوحة تحكم خاصة لرفع ملفات التخصصات، رسوم الساعة، ومعدلات القبول. بياناتك تصل مباشرة لقاعدة بيانات بوصلة ليستفيد منها كل طالب فلسطيني.
               </p>
               <Button asChild size="lg" variant="secondary">
@@ -235,16 +235,16 @@ function Index() {
         </section>
 
         {/* CTA */}
-        <section className="max-w-3xl mx-auto px-6 py-24 text-center relative">
+        <section className="max-w-3xl mx-auto px-6 py-24 text-center relative font-serif">
           <div className="absolute inset-0 bg-gradient-hero -z-10" />
-          <div className="size-20 mx-auto mb-6 rounded-full bg-gradient-compass shadow-compass flex items-center justify-center">
+          <div className="size-20 mx-auto mb-6 rounded-full bg-gradient-compass shadow-compass flex items-center justify-center shadow-md">
             <Compass className="size-10 text-primary-foreground" />
           </div>
-          <h2 className="font-display text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="font-display text-4xl lg:text-5xl font-bold mb-4 font-serif">
             بوصلتك جاهزة. <span className="text-gradient-compass">والاتجاه بيدك.</span>
           </h2>
-          <p className="text-muted-foreground mb-8 leading-relaxed text-lg">
-            لا تترك أهم قرار بحياتك للصدفة. ابدأ جلستك الآن مع بوصلة واحصل على إحداثيات دقيقة لتخصصك الجامعي.
+          <p className="text-muted-foreground mb-8 leading-relaxed text-lg font-serif">
+            لا تترك أهم قرار بحياتك للصدفة. ابدأ الآن مع بوصلة واحصل على إحداثيات دقيقة لتخصصك الجامعي.
           </p>
           <Button asChild size="lg" className="text-base shadow-compass">
             <Link to="/chat"><Sparkles className="size-4 ml-2" /> ابدأ مع بوصلة مجاناً</Link>
