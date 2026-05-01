@@ -21,8 +21,8 @@ function UniPage() {
     <div className="min-h-screen flex flex-col bg-background">
       <SiteHeader />
       <main className="flex-1 max-w-6xl mx-auto px-6 py-12">
-        <h1 className="font-display text-4xl font-bold mb-2">دليل <span className="text-gradient-compass">الجامعات الفلسطينية</span></h1>
-        <p className="text-muted-foreground mb-8">الجامعات الفلسطينية المتاحة حالياً في قاعدة بيانات بوصلة.</p>
+        <h1 className="font-display text-4xl font-bold mb-2 font-serif">دليل <span className="text-gradient-compass font-serif">الجامعات </span></h1>
+        <p className="text-muted-foreground mb-8 font-serif">{"\n"}</p>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {list.map((u) => (
             <div key={u.id} className="bg-card border border-border rounded-sm p-5 shadow-sm">
