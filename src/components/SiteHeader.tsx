@@ -18,13 +18,13 @@ export function SiteHeader() {
 
   return (
     <header className="border-b border-border bg-background/75 backdrop-blur-xl sticky top-0 z-40">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between font-serif">
         <Link to="/" className="flex items-center gap-2.5 group">
           <div className="size-10 bg-gradient-compass rounded-full flex items-center justify-center shadow-compass group-hover:scale-105 transition-transform">
             <CompassLogo className="size-7" />
           </div>
           <div className="flex flex-col leading-none">
-            <span className="font-display text-2xl font-bold text-gradient-compass">بوصلة</span>
+            <span className="font-display text-2xl font-bold text-gradient-compass font-serif">بوصلة</span>
             <span className="text-[10px] text-muted-foreground tracking-widest mt-0.5">BOSLAH · فلسطين</span>
           </div>
         </Link>
