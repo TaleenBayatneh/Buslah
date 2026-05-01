@@ -24,22 +24,21 @@ function Index() {
         <section className="relative overflow-hidden bg-gradient-hero">
           <div className="absolute inset-0 compass-grid opacity-[0.4] pointer-events-none" />
           <div className="max-w-7xl mx-auto px-6 py-20 lg:py-28 grid lg:grid-cols-[1.1fr_1fr] gap-14 items-center relative">
-            <div className="text-center lg:text-right">
-              <span className="inline-flex items-center gap-2 border border-oak/40 bg-card/60 backdrop-blur px-4 py-1.5 text-xs font-semibold text-oak-dark tracking-wider rounded-full mb-6">
+            <div className="text-center lg:text-right font-serif">
+              <span className="inline-flex items-center gap-2 border border-oak/40 bg-card/60 backdrop-blur px-4 py-1.5 text-xs font-semibold text-oak-dark tracking-wider rounded-full mb-6 font-serif">
                 <span className="size-1.5 bg-oak rounded-full animate-pulse" />
                 لطلاب التوجيهي في فلسطين • ٢٠٢٥/٢٠٢٦
               </span>
-              <h1 className="font-display text-5xl lg:text-7xl font-bold leading-[1.15] text-balance mb-6">
+              <h1 className="font-display text-5xl lg:text-7xl font-bold leading-[1.15] text-balance mb-6 font-serif">
                 <span className="text-foreground">حدّد</span>{" "}
-                <span className="text-gradient-compass">اتجاهك</span>
-                <br />
-                نحو التخصص الصح.
+                <span className="text-gradient-compass">اتجاهك</span>{"\n"}
+                نحو التخصص الصح
               </h1>
-              <p className="text-lg text-muted-foreground leading-relaxed text-pretty mb-8 max-w-xl mx-auto lg:mx-0">
+              <p className="text-lg text-muted-foreground leading-relaxed text-pretty mb-8 max-w-xl mx-auto lg:mx-0 font-serif">
                 <strong className="text-foreground">بوصلة</strong> — أول مرشد ذكي يفهم واقع الطالب الفلسطيني. يحلّل معدلك، ميزانية عائلتك، وموقعك الجغرافي ليرسم لك أوضح طريق نحو جامعتك الأنسب.
               </p>
-              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                <Button asChild size="lg" className="text-base shadow-compass">
+              <div className="flex flex-wrap gap-3 justify-center lg:justify-start font-serif">
+                <Button asChild size="lg" variant="outline" className="text-base text-left border-input shadow-sm hover:bg-accent hover:text-accent-foreground">
                   <Link to="/chat"><Compass className="size-4 ml-2" /> ابدأ رحلتك مع بوصلة <ArrowLeft className="size-4 mr-1" /></Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="text-base">
