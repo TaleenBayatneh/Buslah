@@ -21,8 +21,6 @@ const signUpSchema = z.object({
   full_name: z.string().trim().min(2, "الاسم قصير جداً").max(100),
   email: z.string().trim().email("بريد إلكتروني غير صالح").max(255),
   password: z.string().min(6, "كلمة السر ٦ أحرف على الأقل").max(72),
-  account_type: z.enum(["student", "university"]),
-  university_name: z.string().trim().max(200).optional(),
 });
 
 function AuthPage() {
@@ -57,8 +55,6 @@ function AuthPage() {
       full_name: fd.get("full_name"),
       email: fd.get("email"),
       password: fd.get("password"),
-      account_type: fd.get("account_type"),
-      university_name: fd.get("university_name") || undefined,
     });
     if (!parsed.success) {
       toast.error(parsed.error.issues[0].message);
@@ -72,8 +68,7 @@ function AuthPage() {
         emailRedirectTo: `${window.location.origin}/chat`,
         data: {
           full_name: parsed.data.full_name,
-          account_type: parsed.data.account_type,
-          university_name: parsed.data.university_name,
+          account_type: "student",
         },
       },
     });
