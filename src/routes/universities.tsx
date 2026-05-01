@@ -12,7 +12,7 @@ export const Route = createFileRoute("/universities")({
   component: UniPage,
 });
 
-const N8N_WEBHOOK = import.meta.env.VITE_N8N_UNIVERSITY_WEBHOOK_URL as string | undefined;
+const N8N_WEBHOOK = (import.meta.env.VITE_N8N_UNIVERSITY_WEBHOOK_URL as string) || "http://localhost:5678/webhook-test/14ff4507-5050-4cf1-81db-f70d0aae1caa";
 
 const COLUMNS: { key: string; label: string; example: string; note: string }[] = [
   { key: "university_name", label: "اسم الجامعة", example: "جامعة بيرزيت", note: "الاسم الرسمي الكامل للجامعة" },
@@ -96,38 +96,7 @@ function UniPage() {
           </div>
         </section>
 
-        {/* Sample */}
-        <section className="bg-card border border-border rounded-sm p-6 mb-6 shadow-sm">
-          <h2 className="font-display text-xl font-bold text-academic mb-3 font-serif">مثال على شكل الملف</h2>
-          <div className="overflow-x-auto rounded-sm border border-border">
-            <table className="w-full text-xs" dir="ltr">
-              <thead className="bg-paper-dim">
-                <tr>
-                  {COLUMNS.map((c) => (
-                    <th key={c.key} className="p-2 text-left font-mono border-b border-border">{c.key}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="font-mono">
-                <tr className="border-b border-border">
-                  <td className="p-2">جامعة بيرزيت</td><td className="p-2">هندسة حاسوب</td><td className="p-2">5</td><td className="p-2">180</td><td className="p-2">85.5</td>
-                </tr>
-                <tr className="border-b border-border">
-                  <td className="p-2">جامعة بيرزيت</td><td className="p-2">إدارة أعمال</td><td className="p-2">4</td><td className="p-2">140</td><td className="p-2">70.0</td>
-                </tr>
-                <tr>
-                  <td className="p-2">جامعة النجاح</td><td className="p-2">طب بشري</td><td className="p-2">6</td><td className="p-2">350</td><td className="p-2">95.0</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <ul className="mt-4 text-sm text-muted-foreground space-y-1.5 font-serif">
-            <li>• الصيغ المقبولة: <span className="font-mono" dir="ltr">.xlsx, .xls, .csv</span></li>
-            <li>• الحد الأقصى لحجم الملف: <strong>١٠ ميغابايت</strong></li>
-            <li>• الأرقام بدون فواصل أو رموز عملة (نضعها نحن لاحقاً).</li>
-            <li>• كل صفّ يمثّل تخصصاً واحداً — كرّر اسم الجامعة في كل صفّ.</li>
-          </ul>
-        </section>
+        {/* Sample section removed per request */}
 
         {/* Upload form */}
         <section className="bg-card border border-border rounded-sm p-6 shadow-sm">
