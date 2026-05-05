@@ -1,0 +1,227 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Arabic fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Cairo:wght@400;500;600;700;800&display=swap');
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-paper-dim: var(--paper-dim);
+  --color-academic: var(--academic);
+  --color-oak: var(--oak);
+  --color-oak-dark: var(--oak-dark);
+  --font-display: 'Poppins', sans-serif;
+  --font-sans: 'Cairo', sans-serif;
+}
+
+
+:root {
+  --radius: 0.625rem;
+  /* Boslah palette — inspired by olive groves & Palestinian heritage with a modern compass twist */
+  --background: oklch(0.985 0.006 90); /* very light beige */
+  --foreground: oklch(0.18 0.035 30);  /* deep brown text */
+  --paper-dim: oklch(0.96 0.012 90);
+  --academic: oklch(0.45 0.12 35);   /* warm brown - primary */
+  --oak: oklch(0.78 0.10 45);         /* light beige accent */
+  --oak-dark: oklch(0.60 0.14 30);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.03 180);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.03 180);
+  --primary: oklch(0.45 0.12 35);
+  --primary-foreground: oklch(0.98 0.008 90);
+  --secondary: oklch(0.955 0.015 90);
+  --secondary-foreground: oklch(0.42 0.09 180);
+  --muted: oklch(0.955 0.015 90);
+  --muted-foreground: oklch(0.48 0.025 200);
+  --accent: oklch(0.56 0.18 25); /* reddish-brown accent */
+  --accent-foreground: oklch(0.2 0.03 180);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(0.88 0.02 180);
+  --input: oklch(0.92 0.015 180);
+  --ring: oklch(0.42 0.08 35);
+  /* Compass gradients & glows (brown / beige) */
+  --gradient-compass: linear-gradient(135deg, oklch(0.45 0.12 35), oklch(0.78 0.10 45));
+  --gradient-warm: linear-gradient(135deg, oklch(0.56 0.18 25), oklch(0.78 0.10 45));
+  --gradient-hero: radial-gradient(circle at 30% 20%, oklch(0.56 0.18 25 / 0.18), transparent 50%), radial-gradient(circle at 70% 80%, oklch(0.45 0.12 35 / 0.12), transparent 50%);
+  --shadow-compass: 0 10px 40px -12px oklch(0.45 0.12 35 / 0.32);
+  --shadow-glow: 0 0 60px oklch(0.78 0.10 45 / 0.22);
+  --chart-1: oklch(0.66 0.20 35);
+  --chart-2: oklch(0.58 0.16 25);
+  --chart-3: oklch(0.48 0.12 45);
+  --chart-4: oklch(0.82 0.18 30);
+  --chart-5: oklch(0.75 0.16 60);
+  --sidebar: oklch(0.98 0.01 90);
+  --sidebar-foreground: oklch(0.16 0.04 30);
+  --sidebar-primary: oklch(0.22 0.05 35);
+  --sidebar-primary-foreground: oklch(0.98 0.01 90);
+  --sidebar-accent: oklch(0.95 0.02 25);
+  --sidebar-accent-foreground: oklch(0.208 0.042 40);
+  --sidebar-border: oklch(0.93 0.012 90);
+  --sidebar-ring: oklch(0.70 0.04 35);
+}
+
+.dark {
+  /* Dark — deep brown/beige tones */
+  --background: oklch(0.12 0.03 30);
+  --foreground: oklch(0.98 0.01 90);
+  --paper-dim: oklch(0.18 0.03 30);
+  --academic: oklch(0.68 0.14 35);
+  --oak: oklch(0.70 0.12 45);
+  --oak-dark: oklch(0.58 0.14 30);
+  --card: oklch(0.18 0.03 30);
+  --card-foreground: oklch(0.98 0.01 90);
+  --popover: oklch(0.18 0.03 30);
+  --popover-foreground: oklch(0.98 0.01 90);
+  --primary: oklch(0.68 0.14 35);
+  --primary-foreground: oklch(0.12 0.03 30);
+  --secondary: oklch(0.28 0.04 30);
+  --secondary-foreground: oklch(0.98 0.01 90);
+  --muted: oklch(0.28 0.04 30);
+  --muted-foreground: oklch(0.66 0.03 30);
+  --accent: oklch(0.60 0.16 25);
+  --accent-foreground: oklch(0.12 0.03 30);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.68 0.14 35);
+  --gradient-compass: linear-gradient(135deg, oklch(0.68 0.14 35), oklch(0.78 0.10 45));
+  --gradient-warm: linear-gradient(135deg, oklch(0.60 0.16 25), oklch(0.62 0.18 30));
+  --gradient-hero: radial-gradient(circle at 30% 20%, oklch(0.60 0.16 25 / 0.12), transparent 50%), radial-gradient(circle at 70% 80%, oklch(0.68 0.14 35 / 0.18), transparent 50%);
+  --shadow-compass: 0 10px 40px -12px oklch(0 0 0 / 0.6);
+  --shadow-glow: 0 0 60px oklch(0.60 0.16 25 / 0.2);
+  --chart-1: oklch(0.48 0.22 35);
+  --chart-2: oklch(0.64 0.17 25);
+  --chart-3: oklch(0.68 0.18 45);
+  --chart-4: oklch(0.60 0.25 30);
+  --chart-5: oklch(0.62 0.24 60);
+  --sidebar: oklch(0.16 0.04 30);
+  --sidebar-foreground: oklch(0.98 0.01 90);
+  --sidebar-primary: oklch(0.46 0.22 35);
+  --sidebar-primary-foreground: oklch(0.98 0.01 90);
+  --sidebar-accent: oklch(0.28 0.04 25);
+  --sidebar-accent-foreground: oklch(0.98 0.01 90);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.54 0.03 35);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+}
+
+/* ============ Boslah signature animations & utilities ============ */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes compass-needle {
+  0%, 100% { transform: rotate(-12deg); }
+  50% { transform: rotate(18deg); }
+}
+@keyframes float-up {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-spin-slow { animation: spin-slow 24s linear infinite; }
+.animate-compass-needle { animation: compass-needle 4s ease-in-out infinite; transform-origin: center; }
+.animate-float { animation: float-up 3s ease-in-out infinite; }
+.animate-pulse-ring { animation: pulse-ring 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+
+.bg-gradient-compass { background: var(--gradient-compass); }
+.bg-gradient-warm { background: var(--gradient-warm); }
+.bg-gradient-hero { background: var(--gradient-hero); }
+.shadow-compass { box-shadow: var(--shadow-compass); }
+.shadow-glow { box-shadow: var(--shadow-glow); }
+
+.text-gradient-compass {
+  background: var(--gradient-compass);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Compass rose decorative pattern */
+.compass-grid {
+  background-image:
+    radial-gradient(circle at center, var(--color-border) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
