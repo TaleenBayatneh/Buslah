@@ -6,4 +6,17 @@
 // You can pass additional config via defineConfig({ vite: { ... } }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-export default defineConfig();
+export default defineConfig({
+	vite: {
+		server: {
+			proxy: {
+				// Proxy webhook calls to local n8n to avoid CORS issues during development
+				"/webhook-test": {
+					target: "http://localhost:5678",
+					changeOrigin: true,
+					secure: false,
+				},
+			},
+		},
+	},
+});

@@ -103,7 +103,7 @@ function Index() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
               {[
                 { dir: "شمال", icon: TrendingUp, title: "ميولك وقدراتك", text: "نحلل فرعك ومعدلك بالتوجيهي ونربطهم بالتخصصات الواقعية المتاحة لك.", color: "from-academic" },
-                { dir: "شرق", icon: Wallet, title: "موقعك الجغرافي", text: "ميزانية عائلتك، رسوم الجامعات، فرص المنح والتنافس .", color: "from-oak" },
+                { dir: "شرق", icon: Wallet, title: "وضعك المادي", text: "ميزانية عائلتك، رسوم الجامعات، فرص المنح والتنافس.", color: "from-oak" },
                 { dir: "جنوب", icon: MapPin, title: "موقعك الجغرافي", text: "من غزة للضفة — نحسب المواصلات والسكن ونرشّح الأقرب لمنطقتك.", color: "from-academic" },
                 { dir: "غرب", icon: Heart, title: "شغفك ومستقبلك", text: "نطابق طموحك مع التخصصات المطلوبة فعلياً في سوق العمل الفلسطيني والعربي.", color: "from-oak" },
               ].map((f, i) => (
@@ -220,14 +220,23 @@ function Index() {
                 وفّرنا لك لوحة تحكم خاصة لرفع ملفات التخصصات، رسوم الساعة، ومعدلات القبول. بياناتك تصل مباشرة لقاعدة بيانات بوصلة ليستفيد منها كل طالب فلسطيني.
               </p>
               <Button asChild size="lg" variant="secondary">
-                <Link to="/auth">سجّل حسابك كجامعة</Link>
+                <Link to="/universities">بوابة الجامعات</Link>
               </Button>
             </div>
             <ul className="space-y-3 text-sm">
-              {["رفع ملفات Excel/CSV بسهولة", "معالجة تلقائية عبر workflow متكامل", "متابعة حالة كل ملف", "بياناتك آمنة ومشفرة"].map((item) => (
+              {[
+                "رفع ملفات Excel/CSV بسهولة",
+                "معالجة تلقائية عبر workflow متكامل",
+                "متابعة حالة كل ملف",
+                "رفع ملفات التخصصات (اذهب لصفحة الرفع)",
+              ].map((item, idx, arr) => (
                 <li key={item} className="flex items-center gap-3 bg-white/10 backdrop-blur border border-white/15 px-4 py-3 rounded-xl">
                   <div className="size-2 bg-oak rounded-full shadow-glow" />
-                  {item}
+                  {idx === arr.length - 1 ? (
+                    <Link to="/universities" className="hover:underline">{item}</Link>
+                  ) : (
+                    item
+                  )}
                 </li>
               ))}
             </ul>
