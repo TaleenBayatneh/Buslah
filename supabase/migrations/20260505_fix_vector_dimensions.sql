@@ -1,59 +1,38 @@
--- Fix vector dimensions to match Google Gemini (768 dimensions)
--- Previous: 3072 dimensions (mismatched with embedding model)
--- New: 768 dimensions (matches Google Gemini embedding model)
+CREATE EXTENSION IF NOT EXISTS vector;
 
--- Create or replace the match_programs function with correct dimensions
-CREATE OR REPLACE FUNCTION public.match_programs(
-  query_embedding vector(768),
-  match_count int default 5,
-  filter jsonb default '{}'
-)
-RETURNS TABLE (
-  id bigint,
-  content text,
-  metadata jsonb,
-  similarity float
-)
-LANGUAGE plpgsql
-AS $$
-BEGIN
-  RETURN QUERY
-  SELECT
-    programs_documents.id,
-    programs_documents.content,
-    programs_documents.metadata,
-    1 - (programs_documents.embedding <=> query_embedding) as similarity
-  FROM public.programs_documents
-  WHERE programs_documents.metadata @> filter
-  ORDER BY programs_documents.embedding <=> query_embedding
-  LIMIT match_count;
-END;
-$$;
+CREATE TABLE IF NOT EXISTS public.programs_documents_openai (
+  id BIGSERIAL PRIMARY KEY,
+  content TEXT,
+  metadata JSONB DEFAULT '{}',
+  embedding VECTOR(1536)
+);
 
--- Create or replace the match_documents function with correct dimensions
 CREATE OR REPLACE FUNCTION public.match_documents(
-  query_embedding vector(768),
-  match_count int default 5,
-  filter jsonb default '{}'
+  query_embedding VECTOR(1536),
+  match_count INT DEFAULT 5,
+  filter JSONB DEFAULT '{}'
 )
 RETURNS TABLE (
-  id bigint,
-  content text,
-  metadata jsonb,
-  similarity float
+  id BIGINT,
+  content TEXT,
+  metadata JSONB,
+  similarity FLOAT
 )
 LANGUAGE plpgsql
 AS $$
 BEGIN
   RETURN QUERY
   SELECT
-    programs_documents.id,
-    programs_documents.content,
-    programs_documents.metadata,
-    1 - (programs_documents.embedding <=> query_embedding) as similarity
-  FROM public.programs_documents
-  WHERE programs_documents.metadata @> filter
-  ORDER BY programs_documents.embedding <=> query_embedding
+    programs_documents_openai.id,
+    programs_documents_openai.content,
+    programs_documents_openai.metadata,
+    1 - (programs_documents_openai.embedding <=> query_embedding) AS similarity
+  FROM public.programs_documents_openai
+  WHERE programs_documents_openai.metadata @> filter
+  ORDER BY programs_documents_openai.embedding <=> query_embedding
   LIMIT match_count;
 END;
 $$;
+
+-- مهم حتى Supabase يحدّث الكاش
+NOTIFY pgrst, 'reload schema';
