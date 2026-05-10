@@ -20,17 +20,17 @@ export function SiteFooter() {
           <h4 className="font-bold text-foreground mb-3">روابط</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             <li><Link to="/about" className="hover:text-academic">من نحن</Link></li>
-            <li><Link to="/universities" className="hover:text-academic">دليل الجامعات</Link></li>
+            <li><Link to="/universities" className="hover:text-academic">بوابة الجامعات</Link></li>
             <li><Link to="/chat" className="hover:text-academic">الشات بوت</Link></li>
           </ul>
         </div>
         <div>
           <h4 className="font-bold text-foreground mb-3">للجامعات</h4>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            هل أنت ممثل جامعة؟ سجّل حسابك لرفع بيانات التخصصات والقبول.
+            هل أنت ممثل جامعة؟ اطّلع على بوابة الجامعات أو ارفع بيانات التخصصات بسهولة.
           </p>
-          <Link to="/auth" className="inline-block mt-2 text-sm text-academic font-semibold hover:underline">
-            سجّل كجامعة ←
+          <Link to="/universities" className="inline-block mt-2 text-sm text-academic font-semibold hover:underline">
+            بوابة الجامعات ←
           </Link>
         </div>
       </div>

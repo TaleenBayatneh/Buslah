@@ -37,7 +37,7 @@ export function SiteHeader() {
             من نحن
           </Link>
           <Link to="/universities" activeProps={{ className: "text-academic" }} className="hover:text-academic transition-colors">
-            دليل الجامعات
+            بوابة الجامعات
           </Link>
           <Link to="/chat" activeProps={{ className: "text-academic" }} className="hover:text-academic transition-colors">
             الشات

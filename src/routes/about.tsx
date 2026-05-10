@@ -22,19 +22,19 @@ function AboutPage() {
           نحن فريق من طلبة هندسة الحاسوب في جامعة بيرزيت، قمنا بتطوير مشروع تخرج يتمثل في محادثة ذكية ومتقدمة موجهة لطلبة التوجيهي، بهدف تسهيل الوصول إلى تقنيات الذكاء الاصطناعي وجعلها أداة مفيدة ومتاحة للجميع.
         </p>
         <div className="space-y-8">
-          <section>
+          <section className="bg-card border border-border rounded-2xl p-6 shadow-sm">
             <h2 className="font-display text-2xl font-bold text-academic mb-3 font-serif">رسالتنا</h2>
             <p className="text-muted-foreground leading-relaxed font-serif">
               نؤمن بأن كل طالب يستحق إرشاداً مبنياً على بياناته الفعلية: معدله، إمكاناته المالية، وموقعه الجغرافي — بدلاً من النصائح العامة.
             </p>
           </section>
-          <section>
+          <section className="bg-card border border-border rounded-2xl p-6 shadow-sm">
             <h2 className="font-display text-2xl font-bold text-academic mb-3 font-serif">كيف نعمل؟</h2>
             <p className="text-muted-foreground leading-relaxed font-serif">
               بنينا بوصلة كشات بوت ذكي مدعوم بـ workflow متطور على n8n، يجمع بيانات حقيقية من مختلف الجامعات ويحلّلها فوراً ليقترح عليك الخيارات الأنسب لظروفك.
             </p>
           </section>
-          <section>
+          <section className="bg-card border border-border rounded-2xl p-6 shadow-sm">
             <h2 className="font-display text-2xl font-bold text-academic mb-3 font-serif">للجامعات</h2>
             <p className="text-muted-foreground leading-relaxed font-serif">
               وفّرنا لوحة تحكم تتيح للجامعات رفع بياناتها (تخصصات، رسوم، معدلات قبول) لتصل لكل طالب يبحث عن مكانه الأمثل.
