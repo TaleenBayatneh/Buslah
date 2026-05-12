@@ -65,6 +65,10 @@ function Index() {
                 <ShieldCheck className="size-5 text-academic shrink-0" />
                 <p>بياناتك سرية تماماً. جرّب <strong className="text-foreground">كضيف</strong> بدون تسجيل.</p>
               </div>
+              <div className="lg:hidden mt-6 flex flex-col items-center gap-1 text-oak-dark">
+                <span className="text-xs font-bold tracking-wider">اسحب للأسفل لتكتشف المزيد</span>
+                <ChevronDown className="size-5 animate-bounce" />
+              </div>
             </div>
 
             {/* Giant Animated Compass */}
