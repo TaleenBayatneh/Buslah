@@ -24,6 +24,7 @@ const COLUMNS: { key: string; label: string; example: string; note: string }[] =
 
 function UniPage() {
   const [file, setFile] = useState<File | null>(null);
+  const [universityName, setUniversityName] = useState<string>("");
   const [uploading, setUploading] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -38,8 +39,12 @@ function UniPage() {
       const fd = new FormData();
       fd.append("data0", file);  // IMPORTANT: Use "data0" to match n8n's Extract from File expectation
       fd.append("file_name", file.name);
+      if (universityName.trim()) {
+        fd.append("university_name", universityName.trim());
+      }
       
       console.log("📤 Uploading to:", N8N_WEBHOOK);
+      console.log("🏫 University name:", universityName || "(غير محدد)");
       
       const res = await fetch(N8N_WEBHOOK, { 
         method: "POST", 
@@ -58,6 +63,7 @@ function UniPage() {
       toast.success("تم إرسال الملف بنجاح! سنراجع البيانات قريباً.");
       setDone(true);
       setFile(null);
+      setUniversityName("");
     } catch (err) {
       const msg = err instanceof Error ? err.message : "خطأ غير متوقع";
       console.error("❌ Upload error:", err);
@@ -128,6 +134,19 @@ function UniPage() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold mb-2 font-serif">اسم الجامعة</label>
+                <Input
+                  type="text"
+                  placeholder="مثال: جامعة بيرزيت"
+                  value={universityName}
+                  onChange={(e) => setUniversityName(e.target.value)}
+                  className="bg-background"
+                />
+                <p className="text-xs text-muted-foreground mt-1 font-serif">
+                  (اختياري) أدخل اسم الجامعة إذا لم يكن موجوداً في الملف
+                </p>
+              </div>
               <div>
                 <label className="block text-sm font-semibold mb-2 font-serif">اختر الملف</label>
                 <Input

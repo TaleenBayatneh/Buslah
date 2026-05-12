@@ -24,6 +24,7 @@ function ChatPage() {
     { id: "init", role: "assistant", content: "أهلاً وسهلاً فيك في بوصلة! 🧭 أنا مرشدك الذكي لاختيار تخصصك الجامعي. خبّرني عن حالك: شو فرعك في التوجيهي ومعدلك؟" },
   ]);
   const [input, setInput] = useState("");
+  const [universityName, setUniversityName] = useState("");
   const [sending, setSending] = useState(false);
   const [convId, setConvId] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -68,6 +69,7 @@ function ChatPage() {
         userId: user?.id ?? "guest",
         conversationId: convId,
         userName: user?.email ?? "ضيف",
+        universityName: universityName || undefined,
         ...(sessionId && { sessionId })
       };
       
@@ -140,9 +142,12 @@ function ChatPage() {
               <div className="flex gap-3"><div className="size-9 rounded-full bg-gradient-compass flex items-center justify-center"><Loader2 className="size-4 text-primary-foreground animate-spin" /></div><div className="p-3 bg-paper-dim border border-border rounded-2xl rounded-tr-sm text-sm">بوصلة بتفكر...</div></div>
             )}
           </div>
-          <form onSubmit={(e) => { e.preventDefault(); send(); }} className="border-t border-border p-3 flex gap-2 bg-paper-dim">
-            <Input value={input} onChange={(e) => setInput(e.target.value)} placeholder="اكتب سؤالك..." disabled={sending} className="flex-1 bg-card" />
-            <Button type="submit" disabled={sending || !input.trim()}><Send className="size-4" /></Button>
+          <form onSubmit={(e) => { e.preventDefault(); send(); }} className="border-t border-border p-3 space-y-2 bg-paper-dim">
+            <Input value={universityName} onChange={(e) => setUniversityName(e.target.value)} placeholder="اسم الجامعة (اختياري)..." disabled={sending} className="bg-card text-sm" />
+            <div className="flex gap-2">
+              <Input value={input} onChange={(e) => setInput(e.target.value)} placeholder="اكتب سؤالك..." disabled={sending} className="flex-1 bg-card" />
+              <Button type="submit" disabled={sending || !input.trim()}><Send className="size-4" /></Button>
+            </div>
           </form>
         </div>
       </main>
