@@ -20,8 +20,8 @@ export function SiteHeader() {
     <header className="border-b border-border bg-background/75 backdrop-blur-xl sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between font-serif">
         <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="size-10 bg-gradient-compass rounded-full flex items-center justify-center shadow-compass group-hover:scale-105 transition-transform">
-            <CompassLogo className="size-7" />
+          <div className="size-9 bg-gradient-compass rounded-full flex items-center justify-center shadow-compass group-hover:scale-105 transition-transform overflow-hidden">
+            <CompassLogo className="size-9 -m-0.5" />
           </div>
           <div className="flex flex-col leading-none">
             <span className="font-display text-2xl font-bold text-gradient-compass font-serif">بوصلة</span>
@@ -72,6 +72,15 @@ export function SiteHeader() {
           )}
         </div>
       </div>
+      {/* Mobile nav */}
+      <nav className="md:hidden border-t border-border bg-background/90 backdrop-blur-xl">
+        <div className="max-w-7xl mx-auto px-3 h-11 flex items-center gap-4 overflow-x-auto text-xs font-bold text-muted-foreground whitespace-nowrap">
+          <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "text-academic" }} className="hover:text-academic transition-colors">الرئيسية</Link>
+          <Link to="/about" activeProps={{ className: "text-academic" }} className="hover:text-academic transition-colors">من نحن</Link>
+          <Link to="/universities" activeProps={{ className: "text-academic" }} className="hover:text-academic transition-colors">بوابة الجامعات</Link>
+          <Link to="/chat" activeProps={{ className: "text-academic" }} className="hover:text-academic transition-colors">الشات</Link>
+        </div>
+      </nav>
     </header>
   );
 }
