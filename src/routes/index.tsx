@@ -89,15 +89,15 @@ function Index() {
               </div>
 
               {/* result floating card */}
-              <div className="absolute bottom-2 right-0 lg:right-4 bg-card border border-oak/30 rounded-xl p-3 shadow-glow w-52 animate-float" style={{ animationDelay: "0.8s" }}>
+              <div key={sIdx} className="absolute bottom-2 right-0 lg:right-4 bg-card border border-oak/30 rounded-xl p-3 shadow-glow w-52 animate-float transition-opacity duration-500" style={{ animationDelay: "0.8s" }}>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="size-7 rounded-full bg-gradient-warm flex items-center justify-center shrink-0">
                     <GraduationCap className="size-4 text-primary-foreground" />
                   </div>
                   <span className="text-xs text-muted-foreground">اقتراح بوصلة</span>
                 </div>
-                <p className="font-bold text-sm text-academic">هندسة البرمجيات</p>
-                <p className="text-xs text-muted-foreground">جامعة بيرزيت · ٩٢٪ مطابقة</p>
+                <p className="font-bold text-sm text-academic">{current.major}</p>
+                <p className="text-xs text-muted-foreground">{current.uni} · {current.match} مطابقة</p>
               </div>
             </div>
           </div>
