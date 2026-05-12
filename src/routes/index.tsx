@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { CompassLogo } from "@/components/CompassLogo";
-import { ArrowLeft, MapPin, Wallet, Sparkles, MessageSquare, ShieldCheck, Database, Compass, Navigation, GraduationCap, TrendingUp, Heart } from "lucide-react";
+import { ArrowLeft, MapPin, Wallet, Sparkles, MessageSquare, ShieldCheck, Database, Compass, Navigation, GraduationCap, TrendingUp, Heart, ChevronDown } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -16,6 +17,20 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const suggestions = [
+    { major: "هندسة الحاسوب", uni: "جامعة بيرزيت", match: "٩٢٪" },
+    { major: "الطب البشري", uni: "جامعة النجاح", match: "٨٨٪" },
+    { major: "إدارة الأعمال", uni: "الجامعة العربية الأمريكية", match: "٩٠٪" },
+    { major: "الصيدلة", uni: "جامعة الأزهر", match: "٨٥٪" },
+    { major: "تصميم الجرافيك", uni: "جامعة بيت لحم", match: "٨٧٪" },
+    { major: "هندسة مدنية", uni: "جامعة بوليتكنك فلسطين", match: "٨٩٪" },
+  ];
+  const [sIdx, setSIdx] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setSIdx((i) => (i + 1) % suggestions.length), 2800);
+    return () => clearInterval(id);
+  }, []);
+  const current = suggestions[sIdx];
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SiteHeader />
