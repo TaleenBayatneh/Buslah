@@ -34,9 +34,13 @@ export const Route = createRootRoute({
       { title: "بوصلة — مرشدك الذكي لاختيار التخصص الجامعي في فلسطين" },
       { name: "description", content: "بوصلة: شات بوت ذكي يساعد طلاب التوجيهي في فلسطين على اختيار التخصص الجامعي المناسب وفق المعدل، الميزانية، والموقع الجغرافي." },
       { property: "og:title", content: "بوصلة — مرشدك الذكي لاختيار التخصص الجامعي في فلسطين" },
-      { property: "og:description", content: "اختر تخصصك الجامعي بثقة. بوصلة — مرشد ذكي مبني على بيانات حقيقية للجامعات الفلسطينية." },
+      { property: "og:description", content: "بوصلة: شات بوت ذكي يساعد طلاب التوجيهي في فلسطين على اختيار التخصص الجامعي المناسب وفق المعدل، الميزانية، والموقع الجغرافي." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "بوصلة — مرشدك الذكي لاختيار التخصص الجامعي في فلسطين" },
+      { name: "twitter:description", content: "بوصلة: شات بوت ذكي يساعد طلاب التوجيهي في فلسطين على اختيار التخصص الجامعي المناسب وفق المعدل، الميزانية، والموقع الجغرافي." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d2bcf564-07f3-4566-93b8-9b3ccd41d362/id-preview-59308c5f--eb0940bf-8101-442e-8106-92a4acd5b89f.lovable.app-1778608202101.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d2bcf564-07f3-4566-93b8-9b3ccd41d362/id-preview-59308c5f--eb0940bf-8101-442e-8106-92a4acd5b89f.lovable.app-1778608202101.png" },
     ],
     links: [
       {
