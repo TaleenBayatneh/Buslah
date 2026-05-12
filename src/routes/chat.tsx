@@ -16,8 +16,7 @@ export const Route = createFileRoute("/chat")({
 
 interface Msg { id: string; role: "user" | "assistant"; content: string; }
 
-// TODO: استبدل هذا بـ webhook URL تبعك من n8n
-const N8N_WEBHOOK_URL = import.meta.env.VITE_N8N_WEBHOOK_URL as string | undefined;
+const N8N_CHAT_WEBHOOK_URL = import.meta.env.VITE_N8N_CHAT_WEBHOOK_URL as string | undefined;
 
 function ChatPage() {
   const { user } = useAuth();
@@ -55,23 +54,41 @@ function ChatPage() {
     persist("user", text);
 
     try {
-      if (!N8N_WEBHOOK_URL) {
+      if (!N8N_CHAT_WEBHOOK_URL) {
         const fallback = "⚠️ لم يتم ربط الشات بـ n8n بعد. أضف عنوان الـ webhook في إعدادات المشروع لتفعيل الردود الذكية.";
         setMessages((m) => [...m, { id: crypto.randomUUID(), role: "assistant", content: fallback }]);
         return;
       }
-      const res = await fetch(N8N_WEBHOOK_URL, {
+      
+      console.log("📤 Sending message to n8n chat webhook:", N8N_CHAT_WEBHOOK_URL);
+      
+      const res = await fetch(N8N_CHAT_WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, userId: user?.id ?? "guest", conversationId: convId }),
+        body: JSON.stringify({ 
+          text: text,
+          userId: user?.id ?? "guest",
+          conversationId: convId,
+          userName: user?.email ?? "ضيف"
+        }),
       });
+      
+      if (!res.ok) {
+        console.error("❌ n8n webhook error:", res.status, res.statusText);
+        throw new Error(`HTTP ${res.status}`);
+      }
+      
       const data = await res.json().catch(() => ({}));
-      const reply = (data.reply || data.output || data.message || "تم استلام رسالتك.") as string;
+      console.log("✅ Response from n8n:", data);
+      
+      const reply = (data.reply || data.output || data.text || data.message || "تم استلام رسالتك.") as string;
       const botMsg: Msg = { id: crypto.randomUUID(), role: "assistant", content: reply };
       setMessages((m) => [...m, botMsg]);
       persist("assistant", reply);
     } catch (err) {
-      toast.error("تعذّر الاتصال بالمساعد. حاول مرة أخرى.");
+      console.error("❌ Chat error:", err);
+      const errorMsg = err instanceof Error ? err.message : "خطأ غير متوقع";
+      toast.error(`تعذّر الاتصال بالمساعد: ${errorMsg}`);
     } finally {
       setSending(false);
     }
