@@ -38,7 +38,7 @@ function Index() {
         {/* ============== HERO with giant compass ============== */}
         <section className="relative overflow-hidden bg-gradient-hero">
           <div className="absolute inset-0 compass-grid opacity-[0.4] pointer-events-none" />
-          <div className="max-w-7xl mx-auto px-6 py-20 lg:py-28 grid lg:grid-cols-[1.1fr_1fr] gap-14 items-center relative">
+          <div className="max-w-7xl mx-auto px-6 py-10 lg:py-28 grid lg:grid-cols-[1.1fr_1fr] gap-14 items-center relative">
             <div className="text-center lg:text-right font-serif">
               <span className="inline-flex items-center gap-2 border border-oak/40 bg-card/60 backdrop-blur px-4 py-1.5 text-xs font-semibold text-oak-dark tracking-wider rounded-full mb-6 font-serif">
                 <span className="size-1.5 bg-oak rounded-full animate-pulse" />
@@ -61,13 +61,13 @@ function Index() {
                   <Link to="/about">كيف تعمل بوصلة؟</Link>
                 </Button>
               </div>
-              <div className="mt-10 pt-6 border-t border-border flex items-center gap-4 text-sm text-muted-foreground justify-center lg:justify-start">
-                <ShieldCheck className="size-5 text-academic shrink-0" />
-                <p>بياناتك سرية تماماً. جرّب <strong className="text-foreground">كضيف</strong> بدون تسجيل.</p>
-              </div>
-              <div className="lg:hidden mt-6 flex flex-col items-center gap-1 text-oak-dark">
+              <div className="lg:hidden mt-5 flex flex-col items-center gap-1 text-oak-dark">
                 <span className="text-xs font-bold tracking-wider">اسحب للأسفل لتكتشف المزيد</span>
                 <ChevronDown className="size-5 animate-bounce" />
+              </div>
+              <div className="mt-8 pt-6 border-t border-border flex items-center gap-4 text-sm text-muted-foreground justify-center lg:justify-start">
+                <ShieldCheck className="size-5 text-academic shrink-0" />
+                <p>بياناتك سرية تماماً. جرّب <strong className="text-foreground">كضيف</strong> بدون تسجيل.</p>
               </div>
             </div>
 
