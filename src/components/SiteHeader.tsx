@@ -2,7 +2,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { LogOut, MessageSquare, Upload, GraduationCap, Menu } from "lucide-react";
+import { LogOut, MessageSquare, Upload, GraduationCap, Menu, Home, Info, Building2, MessagesSquare } from "lucide-react";
 import { CompassLogo } from "@/components/CompassLogo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from "@/components/ui/sheet";
@@ -20,10 +20,10 @@ export function SiteHeader() {
   const isUniversity = profile?.account_type === "university";
 
   const navLinks = [
-    { to: "/" as const, label: "الرئيسية", exact: true },
-    { to: "/about" as const, label: "من نحن" },
-    { to: "/universities" as const, label: "بوابة الجامعات" },
-    { to: "/chat" as const, label: "الشات" },
+    { to: "/" as const, label: "الرئيسية", exact: true, icon: Home },
+    { to: "/about" as const, label: "من نحن", icon: Info },
+    { to: "/universities" as const, label: "بوابة الجامعات", icon: Building2 },
+    { to: "/chat" as const, label: "الشات", icon: MessagesSquare },
   ];
 
   return (
@@ -47,9 +47,10 @@ export function SiteHeader() {
                       to={l.to}
                       activeOptions={l.exact ? { exact: true } : undefined}
                       activeProps={{ className: "bg-academic/10 text-academic" }}
-                      className="px-4 py-3 rounded-lg text-base font-bold text-foreground hover:bg-muted transition-colors"
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg text-base font-bold text-foreground hover:bg-muted transition-colors"
                     >
-                      {l.label}
+                      <l.icon className="size-5 shrink-0" />
+                      <span>{l.label}</span>
                     </Link>
                   </SheetClose>
                 ))}
@@ -67,19 +68,19 @@ export function SiteHeader() {
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-muted-foreground">
-          <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "text-academic" }} className="hover:text-academic transition-colors">
-            الرئيسية
-          </Link>
-          <Link to="/about" activeProps={{ className: "text-academic" }} className="hover:text-academic transition-colors">
-            من نحن
-          </Link>
-          <Link to="/universities" activeProps={{ className: "text-academic" }} className="hover:text-academic transition-colors">
-            بوابة الجامعات
-          </Link>
-          <Link to="/chat" activeProps={{ className: "text-academic" }} className="hover:text-academic transition-colors">
-            الشات
-          </Link>
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
+          {navLinks.map((l) => (
+            <Link
+              key={l.to}
+              to={l.to}
+              activeOptions={l.exact ? { exact: true } : undefined}
+              activeProps={{ className: "text-academic" }}
+              className="inline-flex items-center gap-1.5 hover:text-academic transition-colors"
+            >
+              <l.icon className="size-4" />
+              <span>{l.label}</span>
+            </Link>
+          ))}
         </nav>
 
         <div className="flex items-center gap-1.5">
