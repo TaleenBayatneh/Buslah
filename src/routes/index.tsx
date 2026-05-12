@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { CompassLogo } from "@/components/CompassLogo";
-import { ArrowLeft, MapPin, Wallet, Sparkles, MessageSquare, ShieldCheck, Database, Compass, Navigation, GraduationCap, TrendingUp, Heart } from "lucide-react";
+import { ArrowLeft, MapPin, Wallet, Sparkles, MessageSquare, ShieldCheck, Database, Compass, Navigation, GraduationCap, TrendingUp, Heart, ChevronDown } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -16,6 +17,20 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const suggestions = [
+    { major: "هندسة الحاسوب", uni: "جامعة بيرزيت", match: "٩٢٪" },
+    { major: "الطب البشري", uni: "جامعة النجاح", match: "٨٨٪" },
+    { major: "إدارة الأعمال", uni: "الجامعة العربية الأمريكية", match: "٩٠٪" },
+    { major: "الصيدلة", uni: "جامعة الأزهر", match: "٨٥٪" },
+    { major: "تصميم الجرافيك", uni: "جامعة بيت لحم", match: "٨٧٪" },
+    { major: "هندسة مدنية", uni: "جامعة بوليتكنك فلسطين", match: "٨٩٪" },
+  ];
+  const [sIdx, setSIdx] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setSIdx((i) => (i + 1) % suggestions.length), 2800);
+    return () => clearInterval(id);
+  }, []);
+  const current = suggestions[sIdx];
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <SiteHeader />
@@ -50,6 +65,10 @@ function Index() {
                 <ShieldCheck className="size-5 text-academic shrink-0" />
                 <p>بياناتك سرية تماماً. جرّب <strong className="text-foreground">كضيف</strong> بدون تسجيل.</p>
               </div>
+              <div className="lg:hidden mt-6 flex flex-col items-center gap-1 text-oak-dark">
+                <span className="text-xs font-bold tracking-wider">اسحب للأسفل لتكتشف المزيد</span>
+                <ChevronDown className="size-5 animate-bounce" />
+              </div>
             </div>
 
             {/* Giant Animated Compass */}
@@ -74,15 +93,15 @@ function Index() {
               </div>
 
               {/* result floating card */}
-              <div className="absolute bottom-2 right-0 lg:right-4 bg-card border border-oak/30 rounded-xl p-3 shadow-glow w-52 animate-float" style={{ animationDelay: "0.8s" }}>
+              <div key={sIdx} className="absolute bottom-2 right-0 lg:right-4 bg-card border border-oak/30 rounded-xl p-3 shadow-glow w-52 animate-float transition-opacity duration-500" style={{ animationDelay: "0.8s" }}>
                 <div className="flex items-center gap-2 mb-1">
                   <div className="size-7 rounded-full bg-gradient-warm flex items-center justify-center shrink-0">
                     <GraduationCap className="size-4 text-primary-foreground" />
                   </div>
                   <span className="text-xs text-muted-foreground">اقتراح بوصلة</span>
                 </div>
-                <p className="font-bold text-sm text-academic">هندسة البرمجيات</p>
-                <p className="text-xs text-muted-foreground">جامعة بيرزيت · ٩٢٪ مطابقة</p>
+                <p className="font-bold text-sm text-academic">{current.major}</p>
+                <p className="text-xs text-muted-foreground">{current.uni} · {current.match} مطابقة</p>
               </div>
             </div>
           </div>
