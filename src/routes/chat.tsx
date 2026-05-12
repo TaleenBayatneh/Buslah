@@ -26,6 +26,7 @@ function ChatPage() {
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [convId, setConvId] = useState<string | null>(null);
+  const [sessionId, setSessionId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -62,24 +63,37 @@ function ChatPage() {
       
       console.log("📤 Sending message to n8n chat webhook:", N8N_CHAT_WEBHOOK_URL);
       
+      const payload = { 
+        text: text,
+        userId: user?.id ?? "guest",
+        conversationId: convId,
+        userName: user?.email ?? "ضيف",
+        ...(sessionId && { sessionId })
+      };
+      
+      console.log("📦 Payload:", payload);
+      
       const res = await fetch(N8N_CHAT_WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          text: text,
-          userId: user?.id ?? "guest",
-          conversationId: convId,
-          userName: user?.email ?? "ضيف"
-        }),
+        body: JSON.stringify(payload),
       });
       
       if (!res.ok) {
         console.error("❌ n8n webhook error:", res.status, res.statusText);
+        const errorText = await res.text();
+        console.error("❌ Response body:", errorText);
         throw new Error(`HTTP ${res.status}`);
       }
       
       const data = await res.json().catch(() => ({}));
       console.log("✅ Response from n8n:", data);
+      
+      // Store sessionId if provided (for n8n chat sessions)
+      if (data.sessionId && !sessionId) {
+        console.log("💾 Storing sessionId:", data.sessionId);
+        setSessionId(data.sessionId);
+      }
       
       const reply = (data.reply || data.output || data.text || data.message || "تم استلام رسالتك.") as string;
       const botMsg: Msg = { id: crypto.randomUUID(), role: "assistant", content: reply };
