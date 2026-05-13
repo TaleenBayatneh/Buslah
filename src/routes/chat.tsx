@@ -1,13 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/lib/auth";
 import { SiteHeader } from "@/components/SiteHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Send, Loader2 } from "lucide-react";
 import { CompassLogo } from "@/components/CompassLogo";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/chat")({
   head: () => ({ meta: [{ title: "الشات الإرشادي — بوصلة" }] }),
@@ -19,32 +18,19 @@ interface Msg { id: string; role: "user" | "assistant"; content: string; }
 const N8N_CHAT_WEBHOOK_URL = import.meta.env.VITE_N8N_CHAT_WEBHOOK_URL as string | undefined;
 
 function ChatPage() {
-  const { user } = useAuth();
+  const { t } = useI18n();
   const [messages, setMessages] = useState<Msg[]>([
-    { id: "init", role: "assistant", content: "أهلاً وسهلاً فيك في بوصلة! 🧭 أنا مرشدك الذكي لاختيار تخصصك الجامعي. خبّرني عن حالك: شو فرعك في التوجيهي ومعدلك؟" },
+    { id: "init", role: "assistant", content: t("chat.init") },
   ]);
   const [input, setInput] = useState("");
   const [universityName, setUniversityName] = useState("");
   const [sending, setSending] = useState(false);
-  const [convId, setConvId] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages]);
-
-  // create conversation for logged-in users
-  useEffect(() => {
-    if (!user || convId) return;
-    supabase.from("chat_conversations").insert({ user_id: user.id, title: "محادثة جديدة" }).select().single()
-      .then(({ data }) => { if (data) setConvId(data.id); });
-  }, [user, convId]);
-
-  const persist = async (role: "user" | "assistant", content: string) => {
-    if (!convId) return;
-    await supabase.from("chat_messages").insert({ conversation_id: convId, role, content });
-  };
 
   const send = async () => {
     const text = input.trim();
@@ -53,58 +39,37 @@ function ChatPage() {
     setMessages((m) => [...m, userMsg]);
     setInput("");
     setSending(true);
-    persist("user", text);
 
     try {
       if (!N8N_CHAT_WEBHOOK_URL) {
-        const fallback = "⚠️ لم يتم ربط الشات بـ n8n بعد. أضف عنوان الـ webhook في إعدادات المشروع لتفعيل الردود الذكية.";
-        setMessages((m) => [...m, { id: crypto.randomUUID(), role: "assistant", content: fallback }]);
+        setMessages((m) => [...m, { id: crypto.randomUUID(), role: "assistant", content: t("chat.notLinked") }]);
         return;
       }
-      
-      console.log("📤 Sending message to n8n chat webhook:", N8N_CHAT_WEBHOOK_URL);
-      
-      const payload = { 
-        text: text,
-        userId: user?.id ?? "guest",
-        conversationId: convId,
-        userName: user?.email ?? "ضيف",
+
+      const payload = {
+        text,
+        userId: "guest",
+        userName: "guest",
         universityName: universityName || undefined,
-        ...(sessionId && { sessionId })
+        ...(sessionId && { sessionId }),
       };
-      
-      console.log("📦 Payload:", payload);
-      
+
       const res = await fetch(N8N_CHAT_WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      
-      if (!res.ok) {
-        console.error("❌ n8n webhook error:", res.status, res.statusText);
-        const errorText = await res.text();
-        console.error("❌ Response body:", errorText);
-        throw new Error(`HTTP ${res.status}`);
-      }
-      
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
       const data = await res.json().catch(() => ({}));
-      console.log("✅ Response from n8n:", data);
-      
-      // Store sessionId if provided (for n8n chat sessions)
-      if (data.sessionId && !sessionId) {
-        console.log("💾 Storing sessionId:", data.sessionId);
-        setSessionId(data.sessionId);
-      }
-      
-      const reply = (data.reply || data.output || data.text || data.message || "تم استلام رسالتك.") as string;
-      const botMsg: Msg = { id: crypto.randomUUID(), role: "assistant", content: reply };
-      setMessages((m) => [...m, botMsg]);
-      persist("assistant", reply);
+      if (data.sessionId && !sessionId) setSessionId(data.sessionId);
+
+      const reply = (data.reply || data.output || data.text || data.message || t("chat.received")) as string;
+      setMessages((m) => [...m, { id: crypto.randomUUID(), role: "assistant", content: reply }]);
     } catch (err) {
-      console.error("❌ Chat error:", err);
-      const errorMsg = err instanceof Error ? err.message : "خطأ غير متوقع";
-      toast.error(`تعذّر الاتصال بالمساعد: ${errorMsg}`);
+      const errorMsg = err instanceof Error ? err.message : t("unis.err.unknown");
+      toast.error(`${t("chat.connectErr")}: ${errorMsg}`);
     } finally {
       setSending(false);
     }
@@ -120,10 +85,9 @@ function ChatPage() {
               <CompassLogo className="size-6" />
             </div>
             <div>
-              <div className="font-display text-base font-bold text-foreground leading-tight">بوصلة</div>
-              <div className="text-xs text-muted-foreground flex items-center gap-1.5"><span className="size-1.5 bg-emerald-500 rounded-full" /> مرشدك الأكاديمي · متصل</div>
+              <div className="font-display text-base font-bold text-foreground leading-tight">{t("chat.botName")}</div>
+              <div className="text-xs text-muted-foreground flex items-center gap-1.5"><span className="size-1.5 bg-emerald-500 rounded-full" /> {t("chat.role")}</div>
             </div>
-            {!user && <span className="mr-auto text-xs text-muted-foreground bg-card border border-border px-2 py-1 rounded-full">جلسة ضيف</span>}
           </div>
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-5 space-y-5 min-h-[60vh]">
             {messages.map((m) => (
@@ -131,7 +95,7 @@ function ChatPage() {
                 <div className={`size-9 rounded-full flex items-center justify-center shrink-0 ${m.role === "assistant" ? "bg-gradient-compass" : "bg-paper-dim border border-border"}`}>
                   {m.role === "assistant"
                     ? <CompassLogo className="size-5" animated={false} />
-                    : <span className="text-sm font-bold">أ</span>}
+                    : <span className="text-sm font-bold">{t("lang.toggle") === "العربية" ? "U" : "أ"}</span>}
                 </div>
                 <div className={`p-3 rounded-2xl text-sm leading-relaxed max-w-[80%] whitespace-pre-wrap ${m.role === "assistant" ? "bg-paper-dim border border-border rounded-tr-sm" : "bg-academic/10 border border-academic/20 rounded-tl-sm"}`}>
                   {m.content}
@@ -139,13 +103,13 @@ function ChatPage() {
               </div>
             ))}
             {sending && (
-              <div className="flex gap-3"><div className="size-9 rounded-full bg-gradient-compass flex items-center justify-center"><Loader2 className="size-4 text-primary-foreground animate-spin" /></div><div className="p-3 bg-paper-dim border border-border rounded-2xl rounded-tr-sm text-sm">بوصلة بتفكر...</div></div>
+              <div className="flex gap-3"><div className="size-9 rounded-full bg-gradient-compass flex items-center justify-center"><Loader2 className="size-4 text-primary-foreground animate-spin" /></div><div className="p-3 bg-paper-dim border border-border rounded-2xl rounded-tr-sm text-sm">{t("chat.thinking")}</div></div>
             )}
           </div>
           <form onSubmit={(e) => { e.preventDefault(); send(); }} className="border-t border-border p-3 space-y-2 bg-paper-dim">
-            <Input value={universityName} onChange={(e) => setUniversityName(e.target.value)} placeholder="اسم الجامعة (اختياري)..." disabled={sending} className="bg-card text-sm" />
+            <Input value={universityName} onChange={(e) => setUniversityName(e.target.value)} placeholder={t("chat.uniPlaceholder")} disabled={sending} className="bg-card text-sm" />
             <div className="flex gap-2">
-              <Input value={input} onChange={(e) => setInput(e.target.value)} placeholder="اكتب سؤالك..." disabled={sending} className="flex-1 bg-card" />
+              <Input value={input} onChange={(e) => setInput(e.target.value)} placeholder={t("chat.askPlaceholder")} disabled={sending} className="flex-1 bg-card" />
               <Button type="submit" disabled={sending || !input.trim()}><Send className="size-4" /></Button>
             </div>
           </form>
