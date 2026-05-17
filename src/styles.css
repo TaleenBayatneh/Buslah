@@ -225,3 +225,10 @@
     radial-gradient(circle at center, var(--color-border) 1px, transparent 1px);
   background-size: 32px 32px;
 }
+
+/* English: keep RTL layout but align text to the left */
+html[lang="en"] body { text-align: left; }
+html[lang="en"] .text-right { text-align: left !important; }
+html[lang="en"] .text-center { text-align: center !important; }
+html[lang="en"] input,
+html[lang="en"] textarea { text-align: left; }
