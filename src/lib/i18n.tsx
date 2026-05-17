@@ -187,6 +187,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     } catch {}
   }, []);
 
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = lang;
+    }
+  }, [lang]);
+
   const setLang = (l: Lang) => {
     setLangState(l);
     try { localStorage.setItem("boslah.lang", l); } catch {}
