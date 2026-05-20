@@ -26,7 +26,6 @@ const COLUMNS: { key: string; labelAr: string; labelEn: string; example: string;
 function UniPage() {
   const { t, lang } = useI18n();
   const [file, setFile] = useState<File | null>(null);
-  const [universityName, setUniversityName] = useState<string>("");
   const [uploading, setUploading] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -41,7 +40,6 @@ function UniPage() {
       const fd = new FormData();
       fd.append("data0", file);
       fd.append("file_name", file.name);
-      if (universityName.trim()) fd.append("university_name", universityName.trim());
 
       const res = await fetch(N8N_WEBHOOK, { method: "POST", body: fd });
       const responseText = await res.text();
@@ -52,7 +50,6 @@ function UniPage() {
       toast.success(t("unis.success"));
       setDone(true);
       setFile(null);
-      setUniversityName("");
     } catch (err) {
       const msg = err instanceof Error ? err.message : t("unis.err.unknown");
       toast.error(msg);
@@ -118,19 +115,6 @@ function UniPage() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-semibold mb-2 font-serif">{t("unis.uniName")}</label>
-                <Input
-                  type="text"
-                  placeholder={t("unis.uniNamePh")}
-                  value={universityName}
-                  onChange={(e) => setUniversityName(e.target.value)}
-                  className="bg-background"
-                />
-                <p className="text-xs text-muted-foreground mt-1 font-serif">
-                  {t("unis.uniNameHint")}
-                </p>
-              </div>
               <div>
                 <label className="block text-sm font-semibold mb-2 font-serif">{t("unis.pickFile")}</label>
                 <Input

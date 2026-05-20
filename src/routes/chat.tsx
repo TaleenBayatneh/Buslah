@@ -23,7 +23,6 @@ function ChatPage() {
     { id: "init", role: "assistant", content: t("chat.init") },
   ]);
   const [input, setInput] = useState("");
-  const [universityName, setUniversityName] = useState("");
   const [sending, setSending] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -50,7 +49,6 @@ function ChatPage() {
         text,
         userId: "guest",
         userName: "guest",
-        universityName: universityName || undefined,
         ...(sessionId && { sessionId }),
       };
 
@@ -107,7 +105,6 @@ function ChatPage() {
             )}
           </div>
           <form onSubmit={(e) => { e.preventDefault(); send(); }} className="border-t border-border p-3 space-y-2 bg-paper-dim">
-            <Input value={universityName} onChange={(e) => setUniversityName(e.target.value)} placeholder={t("chat.uniPlaceholder")} disabled={sending} className="bg-card text-sm" />
             <div className="flex gap-2">
               <Input value={input} onChange={(e) => setInput(e.target.value)} placeholder={t("chat.askPlaceholder")} disabled={sending} className="flex-1 bg-card" />
               <Button type="submit" disabled={sending || !input.trim()}><Send className="size-4" /></Button>
