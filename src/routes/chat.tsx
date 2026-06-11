@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Send, Loader2 } from "lucide-react";
 import { CompassLogo } from "@/components/CompassLogo";
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/chat")({
   head: () => ({ meta: [{ title: "الشات الإرشادي — بوصلة" }] }),
@@ -19,6 +20,8 @@ const N8N_CHAT_WEBHOOK_URL = import.meta.env.VITE_N8N_CHAT_WEBHOOK_URL as string
 
 function ChatPage() {
   const { t } = useI18n();
+  const { isUniversity } = useAuth();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Msg[]>([
     { id: "init", role: "assistant", content: t("chat.init") },
   ]);
@@ -26,6 +29,26 @@ function ChatPage() {
   const [sending, setSending] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Prevent university users from accessing chat
+  if (isUniversity()) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <SiteHeader />
+        <main className="flex-1 flex items-center justify-center px-4">
+          <div className="text-center max-w-md">
+            <h1 className="font-display text-2xl font-bold mb-4 font-serif">{t("chat.notAllowed") || "Access Denied"}</h1>
+            <p className="text-muted-foreground mb-6 font-serif">
+              {t("chat.studentsOnly") || "Chat is available for students and guests only"}
+            </p>
+            <Button onClick={() => navigate({ to: "/" })}>
+              {t("nav.home")}
+            </Button>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });

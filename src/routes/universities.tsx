@@ -1,6 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/lib/auth";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
@@ -25,28 +27,97 @@ const COLUMNS: { key: string; labelAr: string; labelEn: string; example: string;
 
 function UniPage() {
   const { t, lang } = useI18n();
+  const { user, isUniversity, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [done, setDone] = useState(false);
 
+  // Redirect if not a university
+  if (isAuthenticated() && !isUniversity()) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <SiteHeader />
+        <main className="flex-1 flex items-center justify-center px-4">
+          <div className="text-center max-w-md">
+            <h1 className="font-display text-2xl font-bold mb-4 font-serif">{t("unis.notAllowed") || "Access Denied"}</h1>
+            <p className="text-muted-foreground mb-6 font-serif">
+              {t("unis.universitiesOnly") || "This page is for university users only"}
+            </p>
+            <Button onClick={() => navigate({ to: "/" })}>
+              {t("nav.home")}
+            </Button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  // Show loading or redirect to login if not authenticated
+  if (!isAuthenticated() || !user) {
+    return (
+      <div className="min-h-screen flex flex-col bg-background">
+        <SiteHeader />
+        <main className="flex-1 flex items-center justify-center px-4">
+          <div className="text-center">
+            <div className="inline-block animate-spin rounded-full size-8 border-2 border-border border-t-academic" />
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!file) { toast.error(t("unis.err.pick")); return; }
-    if (file.size > 10 * 1024 * 1024) { toast.error(t("unis.err.size")); return; }
-    if (!N8N_WEBHOOK) { toast.error(t("unis.err.webhook")); return; }
+    
+    if (!user) {
+      toast.error(t("unis.err.auth"));
+      return;
+    }
+
+    if (!file) { 
+      toast.error(t("unis.err.pick")); 
+      return; 
+    }
+
+    if (file.size > 10 * 1024 * 1024) { 
+      toast.error(t("unis.err.size")); 
+      return; 
+    }
 
     setUploading(true);
     try {
-      const fd = new FormData();
-      fd.append("data0", file);
-      fd.append("file_name", file.name);
+      // Sanitize filename for storage (remove special chars)
+      const sanitizedName = file.name
+        .replace(/[^a-zA-Z0-9.-]/g, '_')  // Replace non-ASCII with underscore
+        .replace(/_{2,}/g, '_')            // Replace multiple underscores with single
+        .substring(0, 50);                 // Limit length
+      
+      const timestamp = Date.now();
+      const storageName = `${timestamp}_${sanitizedName}`;
+      const filePath = `university-data/${user.id}/${storageName}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from("university-data")
+        .upload(filePath, file);
 
-      const res = await fetch(N8N_WEBHOOK, { method: "POST", body: fd });
-      const responseText = await res.text();
-      if (!res.ok) {
-        const errorData = responseText ? JSON.parse(responseText) : { message: `HTTP ${res.status}` };
-        throw new Error(errorData.message || `${t("unis.err.fail")}: ${res.status}`);
-      }
+      if (uploadError) throw uploadError;
+
+      // Create pending upload record in database
+      const { error: dbError } = await supabase
+        .from("university_uploads")
+        .insert({
+          user_id: user.id,
+          university_name: "تم تحميل الملف",
+          file_name: file.name,  // Store original filename for display
+          file_size: file.size,
+          file_path: filePath,   // Store sanitized storage path
+          status: "pending",
+          notes: "في انتظار موافقة الإداري",
+        });
+
+      if (dbError) throw dbError;
+
       toast.success(t("unis.success"));
       setDone(true);
       setFile(null);

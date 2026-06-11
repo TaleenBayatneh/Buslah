@@ -230,12 +230,3 @@ CREATE POLICY "Universities can read their own files"
       OR public.has_role(auth.uid(), 'admin')
     )
   );
-
--- 9. Seed a few Jordanian universities
-INSERT INTO public.universities (name, city, type, website, description) VALUES
-  ('الجامعة الأردنية', 'عمان', 'public', 'https://ju.edu.jo', 'أعرق الجامعات الأردنية وأكبرها'),
-  ('جامعة العلوم والتكنولوجيا الأردنية', 'إربد', 'public', 'https://just.edu.jo', 'متخصصة بالعلوم والهندسة والطب'),
-  ('الجامعة الهاشمية', 'الزرقاء', 'public', 'https://hu.edu.jo', 'جامعة حكومية متميزة'),
-  ('جامعة اليرموك', 'إربد', 'public', 'https://yu.edu.jo', 'ثاني أكبر جامعة حكومية في الأردن'),
-  ('جامعة الأميرة سمية للتكنولوجيا', 'عمان', 'private', 'https://psut.edu.jo', 'متخصصة بتكنولوجيا المعلومات'),
-  ('جامعة البلقاء التطبيقية', 'السلط', 'public', 'https://bau.edu.jo', 'تركز على التعليم التطبيقي');
